@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Document</title>
+</head>
+<body>
+    <p id = "out">LinkedList</p>
+    <button type = "button" onclick = "add()">add</button>
+    <button type = "button" onclick = "delFront()">DeleteFront</button>
+    <button type = "button" onclick = "delLast()">DeleteLast</button>
+    <button type = "button" onclick = "delPos()">Delete(position)</button>
+    <div id = "list"></div>
+    <script>
+        class Node{
+            constructor(data){
+                this.data = data;
+                this.nextNode = null;
+                this.prevNode = null;
+            }
+        }
+        class LinkedList{
+            constructor(){
+                this.start = null;
+                this.last = null;
+                this.size = 0;
+            }
+            addNode(data){
+                if(this.start == null){
+                    this.start = new Node(data);
+                    this.last = this.start;
+                }
+                else{
+                    this.last.nextNode = new Node(data);
+                    this.last.nextNode.prevNode = this.last;
+                    this.last = this.last.nextNode;
+                }
+                this.size ++;
+                return true;
+            }
+            deleteNodeLast(){
+                if(this.start == null) {
+                    return null;
+                }
+                if(this.start == this.last){
+                    let temp = this.start;
+                    this.start = null;
+                    this.last = null;
+                    this.size --;
+                    return temp.data;
+                }
+                let t = this.last;
+                this.last = this.last.prevNode;
+                this.last.nextNode = null;
+                this.size --;
+                return t.data;
+            }
+            deleteNodeFirst(){
+                if(this.start == null) {
+                    return null;
+                }
+                if(this.start == this.last){
+                    let temp = this.start;
+                    this.start = null;
+                    this.last = null;
+                    this.size --;
+                    return temp.data;
+                }
+                let t = this.start;
+                this.start = this.start.nextNode;
+                this.start.prevNode = null;
+                this.size --;
+                return t.data;
+            }
+            deleteByPos(num){
+                if(num>this.size || this.start == null){
+                    return null;
+                }
+                
+                if(this.start == this.last){
+                    let t = this.start;
+                    this.start = null;
+                    this.last = null;
+                    this.size --;
+                    return t.data;
+                }
+                if(num == 1){
+                    this.size --;
+                let t = this.start;
+                this.start = this.start.nextNode;
+                this.start.prevNode = null;
+                this.size --;
+                return t.data;
+                }
+                if(num == this.size){
+                    this.size --;
+                    return deleteNodeLast();
+                }
+                let temp = this.start;
+                num --;
+                while(num != 0){
+                    temp = temp.nextNode;
+                    num--;
+                }
+                this.size --; 
+                temp.prevNode.nextNode = temp.nextNode;
+                temp.nextNode.prevNode = temp.prevNode;
+                return temp.data;
+            }
+
+        }
+        
+        let obj = new LinkedList();
+        function delLast(){
+           let t = obj.deleteNodeLast();
+           t[0].style.display = "none";
+           t[1].style.display = "none";
+           return true;
+        }
+        function delFront(){          
+           let t = obj.deleteNodeFirst();
+           t[0].style.display = "none";
+           t[1].style.display = "none";
+           return true;
+        }
+        function delPos(){
+            let num = prompt("Enter Position");
+            let t = obj.deleteByPos(num);
+           t[0].style.display = "none";
+           t[1].style.display = "none";
+           return true;
+        }
+        function add(){
+            let input = prompt("Enter Data");
+            let list = document.getElementById("list");
+            let but = document.createElement("button");
+            let img = document.createElement("img");
+            img.src = "img.png";
+            img.height = 20;
+            let text = document.createTextNode(input);
+            but.append(text);
+            list.appendChild(but);
+            list.appendChild(img);
+            y = [but, img];
+            obj.addNode(y);
+            
+            return true;
+        }
+    </script>
+</body>
+</html>
